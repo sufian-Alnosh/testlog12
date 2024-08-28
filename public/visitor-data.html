@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بيانات الزائرين</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>بيانات الزائرين</h1>
+    <table id="visitors-table">
+        <tr>
+            <th>IP</th>
+            <th>الجهاز</th>
+            <th>المتصفح</th>
+            <th>وقت الدخول</th>
+        </tr>
+    </table>
+    <script>
+        async function fetchAllVisitors() {
+            try {
+                const response = await fetch('/all-visitors');
+                const data = await response.json();
+                const table = document.getElementById('visitors-table');
+                
+                data.forEach(visitor => {
+                    const row = table.insertRow();
+                    row.insertCell(0).innerText = visitor.ip;
+                    row.insertCell(1).innerText = visitor.device;
+                    row.insertCell(2).innerText = visitor.browser;
+                    row.insertCell(3).innerText = new Date(visitor.time).toLocaleString();
+                });
+            } catch (error) {
+                console.error('Error fetching visitor data:', error);
+            }
+        }
+
+        fetchAllVisitors();
+    </script>
+</body>
+</html>
